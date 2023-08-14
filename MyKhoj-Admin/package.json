@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "create-next-app": "^13.4.4",
+    "mkcert": "^1.5.1",
+    "sharp": "^0.32.1"
+  }
+}

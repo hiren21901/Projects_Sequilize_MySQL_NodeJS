@@ -1,0 +1,30 @@
+mykhoj/
+├── backend/
+│   ├── controllers/ : Contains modules that handle the business logic of the application, processing requests, interacting with models, and preparing responses.
+│   ├── middlewares/ : Stores middleware functions that can be applied to incoming requests for actions like authentication, input validation, error handling, etc.
+│   ├── models/ : Holds data models or schemas that represent the structure and behavior of the application's data.
+│   ├── routes/ : Defines API routes and their associated handlers to route requests to the appropriate controller functions.
+│   ├── tests/ : Includes tests specific to the backend code, ensuring its functionality and identifying potential issues.
+│   └── utils/ : Stores utility modules or helper functions commonly used across the backend codebase for reusability.
+├── frontend/
+│   ├── components/ : Stores reusable UI components that can be used across different pages of the application.
+│   ├── pages/ : Contains modules or components representing different pages of the application, including routing and rendering required components for the UI.
+│   ├── services/ : Stores modules that handle data fetching, API interactions, and other client-side services.
+│   ├── styles/ : Holds CSS or styling files related to frontend components and pages.
+│   ├── tests/ : Includes tests specific to the frontend code, ensuring its functionality and identifying potential issues.
+│   └── utils/ : Stores utility modules or helper functions commonly used across the frontend codebase for reusability.
+├── public/
+│   ├── css/ : Stores CSS files that define the styles of the application.
+│   ├── img/ : Holds image files used in the application.
+│   └── js/ : Stores JavaScript files used in the application.
+├── shared/
+│   ├── utils/ : Stores utility modules or helper functions commonly used by both the backend and frontend codebases.
+│   ├── models/ : Holds shared data models or schemas used by both the backend and frontend.
+│   └── services/ : Stores shared service modules or functionality used by both the backend and frontend.
+├── docs/ : Stores project documentation, such as API documentation, architectural diagrams, and guidelines.
+├── config/
+│   └── .env : Stores environment-specific configurations, such as API keys and database credentials.
+├── .gitignore : Specifies files and directories to be ignored by version control systems like Git.
+├── node_modules/ : Stores the installed dependencies required by the project.
+├── package-lock.json : Locks down specific versions of installed packages to ensure consistency across installations.
+└── package.json : Contains metadata about the project and lists project dependencies, scripts, and other configurations required by npm.

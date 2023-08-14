@@ -1,0 +1,191 @@
+use mykhoj;
+-- Create Adm_UserMst Table
+CREATE TABLE Adm_UserMst (
+	UserID BIGINT PRIMARY KEY AUTO_INCREMENT,
+	UserName VARCHAR(25) NOT NULL,
+	Password VARCHAR(100) NOT NULL,
+	DepartmentID TINYINT NOT NULL DEFAULT -1,
+	DesignationID TINYINT NOT NULL DEFAULT -1,
+	Roll VARCHAR(25),
+	FName VARCHAR(25) NOT NULL,
+	LName VARCHAR(25) NOT NULL,
+	Gender ENUM('Male', 'Female') DEFAULT 'Male',
+	Email VARCHAR(50),
+	MobileNumber BIGINT UNSIGNED NOT NULL,
+	Address VARCHAR(255) NOT NULL,
+	CityID MEDIUMINT NOT NULL DEFAULT -1,
+	Status BIT DEFAULT 1,
+	CreatedBy BIGINT NOT NULL DEFAULT -1,
+	ModifiedBy BIGINT,
+	ModifiedOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT FK_Adm_UserMst_DepartmentID
+		FOREIGN KEY (DepartmentID) REFERENCES Adm_DepartmentMst(DepartmentID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_Adm_UserMst_DesignationID
+		FOREIGN KEY (DesignationID) REFERENCES Adm_DesignationMst(DesignationID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_Adm_UserMst_CityID
+		FOREIGN KEY (CityID) REFERENCES L_CityMst(CityID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,		
+	CONSTRAINT FK_Adm_UserMst_CreatedBy
+		FOREIGN KEY (CreatedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_Adm_UserMst_ModifiedBy
+		FOREIGN KEY (ModifiedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE
+) ENGINE=InnoDB;
+-- Create Adm_DepartmentMst Table
+CREATE TABLE Adm_DepartmentMst (
+	DepartmentID TINYINT PRIMARY KEY AUTO_INCREMENT,
+	DepartmentName VARCHAR(50) NOT NULL,
+	CreatedBy BIGINT NOT NULL DEFAULT -1,
+	ModifiedBy BIGINT,
+	ModifiedOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT FK_Adm_DepartmentMst_CreatedBy
+		FOREIGN KEY (CreatedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_Adm_DepartmentMst_ModifiedBy
+		FOREIGN KEY (ModifiedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE
+) ENGINE=InnoDB;
+-- Create Adm_DesignationMst Table
+CREATE TABLE Adm_DesignationMst (
+	DesignationID TINYINT PRIMARY KEY AUTO_INCREMENT,
+	DesignationName VARCHAR(50) NOT NULL,
+	DepartmentID TINYINT NOT NULL DEFAULT -1,
+	CreatedBy BIGINT NOT NULL DEFAULT -1,
+	ModifiedBy BIGINT,
+	ModifiedOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT FK_Adm_DesignationMst_DepartmentID
+		FOREIGN KEY (DepartmentID) REFERENCES Adm_DepartmentMst(DepartmentID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_Adm_DesignationMst_CreatedBy
+		FOREIGN KEY (CreatedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_Adm_DesignationMst_ModifiedBy
+		FOREIGN KEY (ModifiedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE
+) ENGINE=InnoDB;
+-- Create L_CountyMst Table
+CREATE TABLE L_CountyMst (
+	CountyID TINYINT PRIMARY KEY AUTO_INCREMENT,
+	CountryName VARCHAR(50) NOT NULL,
+	CreatedBy BIGINT NOT NULL DEFAULT -1,
+	ModifiedBy BIGINT,
+	ModifiedOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT FK_L_CountyMst_CreatedBy
+		FOREIGN KEY (CreatedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_L_CountyMst_ModifiedBy
+		FOREIGN KEY (ModifiedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE
+) ENGINE=InnoDB;
+-- Create L_StateMst Table
+CREATE TABLE L_StateMst (
+	StateID TINYINT PRIMARY KEY AUTO_INCREMENT,
+	StateName VARCHAR(50) NOT NULL,
+	CountyID TINYINT NOT NULL,
+	CreatedBy BIGINT NOT NULL DEFAULT -1,
+	ModifiedBy BIGINT,
+	ModifiedOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT FK_L_StateMst_CountyID
+		FOREIGN KEY (CountyID) REFERENCES L_CountyMst(CountyID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_L_StateMst_CreatedBy
+		FOREIGN KEY (CreatedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_L_StateMst_ModifiedBy
+		FOREIGN KEY (ModifiedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE
+) ENGINE=InnoDB;
+-- Create L_CityMst Table
+CREATE TABLE L_CityMst (
+	CityID MEDIUMINT PRIMARY KEY AUTO_INCREMENT,
+	CityName VARCHAR(50) NOT NULL,
+	StateID TINYINT NOT NULL,
+	CountyID TINYINT NOT NULL,
+	CreatedBy BIGINT NOT NULL DEFAULT -1,
+	ModifiedBy BIGINT,
+	ModifiedOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT FK_L_CityMst_StateID
+		FOREIGN KEY (StateID) REFERENCES L_StateMst(StateID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_L_CityMst_CountyID
+		FOREIGN KEY (CountyID) REFERENCES L_CountyMst(CountyID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_L_CityMst_CreatedBy
+		FOREIGN KEY (CreatedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_L_CityMst_ModifiedBy
+		FOREIGN KEY (ModifiedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE
+) ENGINE=InnoDB;
+-- Create L_AreaMst Table
+CREATE TABLE L_AreaMst (
+	AreaID INT PRIMARY KEY AUTO_INCREMENT,
+	AreaName VARCHAR(50) NOT NULL,
+	Pincode MEDIUMINT UNSIGNED NOT NULL,
+	CityID MEDIUMINT NOT NULL,
+	StateID TINYINT NOT NULL,
+	CountyID TINYINT NOT NULL,
+	CreatedBy BIGINT NOT NULL DEFAULT -1,
+	ModifiedBy BIGINT,
+	ModifiedOn TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT FK_L_AreaMst_CityID
+		FOREIGN KEY (CityID) REFERENCES L_CityMst(CityID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_L_AreaMst_StateID
+		FOREIGN KEY (StateID) REFERENCES L_StateMst(StateID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_L_AreaMst_CountyID
+		FOREIGN KEY (CountyID) REFERENCES L_CountyMst(CountyID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_L_AreaMst_CreatedBy
+		FOREIGN KEY (CreatedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE,
+	CONSTRAINT FK_L_AreaMst_ModifiedBy
+		FOREIGN KEY (ModifiedBy) REFERENCES Adm_UserMst(UserID)
+		ON DELETE RESTRICT
+		ON UPDATE CASCADE
+) ENGINE=InnoDB;
+
+-- Dump 1st Row in All Table
+	SET FOREIGN_KEY_CHECKS = 0;
+		INSERT INTO Adm_UserMst (UserID, UserName, Password, DepartmentID, DesignationID, Roll, FName, LName, Gender, Email, MobileNumber, Address, CityID, Status, CreatedBy)
+		VALUES (-1, 'dev', 'dev@9825611047', -1, -1, 'Super Admin', 'Dhaval', 'Shah', 'Male', 'info@mykhoj.in', '91846033771', 'Vishaom Tech Saport Pvt. Ltd.\r\n303, Valentina Business Hub,\r\nNear Shell Petrol Pump,\r\nL.P. Savani Road,\r\nAdajan,\r\nSurat - 395009', -1, b'1', -1);
+	SET FOREIGN_KEY_CHECKS = 1;		
+	INSERT INTO Adm_DepartmentMst (DepartmentID, DepartmentName, CreatedBy)
+	VALUES (-1, '--Select Department--', -1);	
+	INSERT INTO Adm_DesignationMst (DesignationID, DesignationName, DepartmentID, CreatedBy)
+	VALUES (-1, '--Select Designation--', -1, -1);
+	INSERT INTO L_CountyMst (CountyID, CountryName, CreatedBy)
+	VALUES (-1, '--Select Country--', -1);
+	INSERT INTO L_StateMst (StateID, StateName, CountyID, CreatedBy)
+	VALUES (-1, '--Select State--', -1, -1);
+	INSERT INTO L_CityMst (CityID, CityName, StateID, CountyID, CreatedBy)
+	VALUES (-1, '--Select City--', -1, -1, -1);	
+	INSERT INTO L_AreaMst (AreaID, AreaName, Pincode, CityID, StateID, CountyID, CreatedBy)
+	VALUES (-1, '--Select Area--', 000000, -1, -1, -1, -1);
